@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PulseDesk 股票实时监控</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">P</div>
+          <div>
+            <strong>PulseDesk</strong>
+            <span>实时监控</span>
+          </div>
+        </div>
+        <nav class="nav">
+          <button class="active" title="行情">⌁</button>
+          <button title="预警">⚑</button>
+          <button title="订单">▣</button>
+          <button title="组合">◫</button>
+          <button title="设置">⚙</button>
+        </nav>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Market Monitor</p>
+            <h1>股票实时监控操作台</h1>
+          </div>
+          <div class="market-state">
+            <span class="pulse"></span>
+            <div>
+              <strong id="marketStatus">模拟实时行情</strong>
+              <span id="clock">--:--:--</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="ticker-strip" id="tickerStrip"></section>
+
+        <section class="layout">
+          <div class="left-column">
+            <section class="panel chart-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Selected</p>
+                  <h2 id="selectedName">腾讯控股</h2>
+                </div>
+                <div class="segmented" aria-label="周期">
+                  <button class="active">1分</button>
+                  <button>5分</button>
+                  <button>日线</button>
+                </div>
+              </div>
+              <canvas id="priceChart" width="920" height="380"></canvas>
+              <div class="metrics" id="selectedMetrics"></div>
+            </section>
+
+            <section class="panel table-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Watchlist</p>
+                  <h2>自选股</h2>
+                </div>
+                <div class="search-box">
+                  <span>⌕</span>
+                  <input id="symbolSearch" placeholder="搜索代码或名称" />
+                </div>
+              </div>
+              <div class="stock-table" id="stockTable"></div>
+            </section>
+          </div>
+
+          <aside class="right-column">
+            <section class="panel trade-panel">
+              <div class="panel-head compact">
+                <h2>快速操作</h2>
+                <span id="tradeSymbol">00700.HK</span>
+              </div>
+              <div class="trade-tabs">
+                <button class="buy active" id="buyTab">买入</button>
+                <button class="sell" id="sellTab">卖出</button>
+              </div>
+              <label>
+                价格
+                <input id="orderPrice" type="number" step="0.01" />
+              </label>
+              <label>
+                数量
+                <input id="orderQty" type="number" value="100" step="100" />
+              </label>
+              <div class="order-summary">
+                <span>预估金额</span>
+                <strong id="orderValue">--</strong>
+              </div>
+              <button class="primary-action" id="placeOrder">提交模拟订单</button>
+            </section>
+
+            <section class="panel assets-panel">
+              <div class="panel-head compact">
+                <div>
+                  <p class="eyebrow">Assets</p>
+                  <h2>资产增长</h2>
+                </div>
+                <strong id="assetTotal">--</strong>
+              </div>
+              <canvas id="assetChart" width="320" height="160"></canvas>
+              <div class="asset-stats">
+                <div>
+                  <span>今日收益</span>
+                  <strong id="assetToday">--</strong>
+                </div>
+                <div>
+                  <span>累计收益</span>
+                  <strong id="assetGrowth">--</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel alerts-panel">
+              <div class="panel-head compact">
+                <h2>价格预警</h2>
+                <button id="addAlert" title="添加预警">＋</button>
+              </div>
+              <div id="alertsList" class="alerts-list"></div>
+            </section>
+
+            <section class="panel news-panel">
+              <div class="panel-head compact">
+                <h2>事件流</h2>
+                <span>Live</span>
+              </div>
+              <div id="activityFeed" class="activity-feed"></div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
