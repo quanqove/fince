@@ -41,6 +41,8 @@ const elements = {
   priceChart: document.querySelector("#priceChart"),
   assetChart: document.querySelector("#assetChart"),
   assetTotal: document.querySelector("#assetTotal"),
+  assetPrincipal: document.querySelector("#assetPrincipal"),
+  assetPnL: document.querySelector("#assetPnL"),
   assetToday: document.querySelector("#assetToday"),
   assetGrowth: document.querySelector("#assetGrowth"),
   alertsList: document.querySelector("#alertsList"),
@@ -253,12 +255,16 @@ function drawChart() {
 
 function drawAssetChart() {
   const latest = assetHistory.at(-1);
-  const first = assetHistory[0];
+  const principal = assetHistory[0];
   const today = latest - assetHistory.at(-8);
-  const growth = latest - first;
+  const growth = latest - principal;
+  const growthPct = (growth / principal) * 100;
   elements.assetTotal.textContent = formatPrice(latest);
+  elements.assetPrincipal.textContent = formatPrice(principal);
+  elements.assetPnL.textContent = `${growth >= 0 ? "+" : ""}${formatPrice(growth)} (${growth >= 0 ? "+" : ""}${growthPct.toFixed(2)}%)`;
   elements.assetToday.textContent = `${today >= 0 ? "+" : ""}${formatPrice(today)}`;
   elements.assetGrowth.textContent = `${growth >= 0 ? "+" : ""}${formatPrice(growth)}`;
+  elements.assetPnL.className = growth >= 0 ? "up" : "down";
   elements.assetToday.className = today >= 0 ? "up" : "down";
   elements.assetGrowth.className = growth >= 0 ? "up" : "down";
   drawLineChart(elements.assetChart, assetHistory, {
