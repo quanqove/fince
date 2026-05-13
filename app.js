@@ -51,6 +51,7 @@ const elements = {
   buyTab: document.querySelector("#buyTab"),
   sellTab: document.querySelector("#sellTab"),
   placeOrder: document.querySelector("#placeOrder"),
+  quickSell: document.querySelector("#quickSell"),
   addAlert: document.querySelector("#addAlert")
 };
 
@@ -317,17 +318,30 @@ function setTradeSide(side) {
   elements.sellTab.classList.toggle("active", side === "sell");
 }
 
+function submitSimulatedOrder(action, qty = elements.orderQty.value) {
+  const stock = stocks.find((item) => item.symbol === selectedSymbol);
+  alerts.unshift({ symbol: stock.symbol, rule: `${action}委托已提交 ${qty} 股`, active: true });
+  if (alerts.length > 5) alerts.pop();
+  renderAlerts();
+}
+
 elements.symbolSearch.addEventListener("input", renderStockTable);
 elements.orderPrice.addEventListener("input", updateOrderValue);
 elements.orderQty.addEventListener("input", updateOrderValue);
 elements.buyTab.addEventListener("click", () => setTradeSide("buy"));
 elements.sellTab.addEventListener("click", () => setTradeSide("sell"));
 elements.placeOrder.addEventListener("click", () => {
-  const stock = stocks.find((item) => item.symbol === selectedSymbol);
   const action = tradeSide === "buy" ? "买入" : "卖出";
-  alerts.unshift({ symbol: stock.symbol, rule: `${action}委托已提交 ${elements.orderQty.value} 股`, active: true });
-  if (alerts.length > 5) alerts.pop();
-  renderAlerts();
+  submitSimulatedOrder(action);
+});
+elements.quickSell.addEventListener("click", () => {
+  const stock = stocks.find((item) => item.symbol === selectedSymbol);
+  const qty = Number(elements.orderQty.value || 0) > 0 ? elements.orderQty.value : 100;
+  elements.orderPrice.value = stock.price.toFixed(2);
+  elements.orderQty.value = qty;
+  setTradeSide("sell");
+  updateOrderValue();
+  submitSimulatedOrder("一键抛售", qty);
 });
 elements.addAlert.addEventListener("click", () => {
   const stock = stocks.find((item) => item.symbol === selectedSymbol);
